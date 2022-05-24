@@ -75,6 +75,8 @@ const createTabsContent = (id) => {
     if (product.categoryId == id) {
       const tabsContentItem = tabsContentTemplateItem.cloneNode(true);
       tabsContentTemplateItem.remove();
+      tabsContentItem.querySelector(".tabs-content__item-image").alt =
+        product.productName;
       tabsContentItem.querySelector(".tabs-content__item-name").textContent =
         product.productName;
       tabsContentItem.id = product.categoryId;
