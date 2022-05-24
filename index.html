@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="page" lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Guild-Pro</title>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body></body>
+  <body class="page-body">
+    <div class="wrapper">
+      <section class="products">
+        <h2 class="visually-hidden">Товары</h2>
+      </section>
+    </div>
+
+    <template id="tabs">
+      <div class="tabs">
+        <ul class="tabs__list">
+          <li class="tabs__item"></li>
+        </ul>
+      </div>
+    </template>
+
+    <template id="tabs-content">
+      <div class="tabs-content">
+        <ul class="tabs-content__list">
+          <li class="tabs-content__item">
+            <img
+              class="tabs-content__item-image"
+              src="img/product.jpeg"
+              alt="Изображение товара"
+              width="150px"
+              height="150px"
+            />
+            <p class="tabs-content__item-name">название</p>
+          </li>
+        </ul>
+      </div>
+    </template>
+
+    <script src="js/main.js"></script>
+  </body>
 </html>
