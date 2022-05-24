@@ -42,6 +42,13 @@ const tabsTemplateList = document
 const tabsTemplateItem = document
   .querySelector("#tabs")
   .content.querySelector(".tabs__item");
+const tabsContentTemplateList = document
+  .querySelector("#tabs-content")
+  .content.querySelector(".tabs-content__list");
+
+const tabsContentTemplateItem = document
+  .querySelector("#tabs-content")
+  .content.querySelector(".tabs-content__item");
 
 const createTabs = () => {
   const tabsItemFragment = document.createDocumentFragment();
@@ -59,14 +66,6 @@ const createTabs = () => {
 };
 
 createTabs();
-
-const tabsContentTemplateList = document
-  .querySelector("#tabs-content")
-  .content.querySelector(".tabs-content__list");
-
-const tabsContentTemplateItem = document
-  .querySelector("#tabs-content")
-  .content.querySelector(".tabs-content__item");
 
 const createTabsContent = (id) => {
   const tabsContentItemFragment = document.createDocumentFragment();
@@ -92,11 +91,10 @@ const tabsContent = document.querySelectorAll(".tabs-content__item");
 
 createTabsContent(tabs[0].id);
 
-const clearPicture = () => {
+const clearTab = () => {
   const tabsContent = document.getElementsByClassName("tabs-content__item");
-  let el;
-  while ((el = tabsContent[0])) {
-    el.parentNode.removeChild(el);
+  while (tabsContent.length > 0) {
+    tabsContent[0].remove();
   }
 };
 
@@ -112,7 +110,7 @@ tabs.forEach((tab) => {
     evt.preventDefault();
     hideTab();
     evt.target.classList.add("tabs__item--current");
-    clearPicture();
+    clearTab();
     createTabsContent(evt.target.id);
   });
 });
