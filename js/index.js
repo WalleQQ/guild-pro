@@ -41,6 +41,12 @@ const tabsTemplateList = document
 const tabsTemplateItem = document
   .querySelector("#tabs")
   .content.querySelector(".tabs__item");
+const tabsContentTemplateList = document
+  .querySelector("#tabs-content")
+  .content.querySelector(".tabs-content__list");
+const tabsContentTemplateItem = document
+  .querySelector("#tabs-content")
+  .content.querySelector(".tabs-content__item");
 
 const createTabs = () => {
   const tabsItemFragment = document.createDocumentFragment();
@@ -59,59 +65,58 @@ const createTabs = () => {
 
 createTabs();
 
-const tabsContentTemplateList = document
-  .querySelector("#tabs-content")
-  .content.querySelector(".tabs-content__list");
+const createTabsContentList = () => {
+  const tabsContentListFragment = document.createDocumentFragment();
+  tabsContentTemplateItem.remove();
+  categories.forEach((item) => {
+    const tabsContentList = tabsContentTemplateList.cloneNode(true);
+    tabsContentList.id = item.categoryId;
+    tabsContentListFragment.appendChild(tabsContentList);
+  });
 
-const tabsContentTemplateItem = document
-  .querySelector("#tabs-content")
-  .content.querySelector(".tabs-content__item");
+  productsElement.appendChild(tabsContentListFragment);
+};
 
-const createTabsContent = (id) => {
+createTabsContentList();
+
+const tabsItem = document.querySelectorAll(".tabs__item");
+const tabsContent = document.querySelectorAll(".tabs-content__list");
+const tabsContentItem = document.querySelectorAll(".tabs-content__item");
+
+const createTabsContentItem = () => {
   const tabsContentItemFragment = document.createDocumentFragment();
 
-  products.forEach((product) => {
-    if (product.categoryId == id) {
-      const tabsContentItem = tabsContentTemplateItem.cloneNode(true);
-      tabsContentTemplateItem.remove();
-      tabsContentItem.querySelector(".tabs-content__item-image").alt =
-        product.productName;
-      tabsContentItem.querySelector(".tabs-content__item-name").textContent =
-        product.productName;
-      tabsContentItem.id = product.categoryId;
-      tabsContentItemFragment.appendChild(tabsContentItem);
-    }
+  tabsContent.forEach((tab, i) => {
+    products.forEach((product) => {
+      if (product.categoryId == tab.id) {
+        const tabsContentItem = tabsContentTemplateItem.cloneNode(true);
+        tabsContentItem.querySelector(".tabs-content__item-image").alt =
+          product.productName;
+        tabsContentItem.querySelector(".tabs-content__item-name").textContent =
+          product.productName;
+        tabsContentItem.id = product.categoryId;
+        tabsContentItemFragment.appendChild(tabsContentItem);
+      }
+    });
+    tabsContent[i].appendChild(tabsContentItemFragment);
   });
-  tabsContentTemplateList.appendChild(tabsContentItemFragment);
-  productsElement.appendChild(tabsContentTemplateList);
 };
 
-const tabs = document.querySelectorAll(".tabs__item");
-
-createTabsContent(tabs[0].id);
-
-const tabsContent = document.querySelectorAll(".tabs-content__item");
-
-const clearTab = () => {
-  const tabsContent = document.getElementsByClassName("tabs-content__item");
-  while (tabsContent.length > 0) {
-    tabsContent[0].remove();
-  }
-};
+createTabsContentItem();
 
 const hideTab = () => {
-  tabs.forEach((tab) => {
-    tab.classList.remove("tabs__item--current");
+  tabsItem.forEach((item, i) => {
+    item.classList.remove("tabs__item--current");
+    tabsContent[i].classList.remove("tabs-content__list--current");
   });
 };
 
-tabs.forEach((tab) => {
-  tabs[0].classList.add("tabs__item--current");
-  tab.addEventListener("click", (evt) => {
-    evt.preventDefault();
+tabsItem.forEach((item, i) => {
+  tabsItem[0].classList.add("tabs__item--current");
+  tabsContent[0].classList.add("tabs-content__list--current");
+  item.addEventListener("click", (evt) => {
     hideTab();
     evt.target.classList.add("tabs__item--current");
-    clearTab();
-    createTabsContent(evt.target.id);
+    tabsContent[i].classList.add("tabs-content__list--current");
   });
 });

@@ -69,10 +69,14 @@ img {
   margin: 0;
   padding: 20px;
   border: 2px solid var(--color-dim-gray);
-  display: flex;
+  display: none;
   align-items: stretch;
   flex-wrap: wrap;
   gap: 30px;
+}
+
+.tabs-content__list--current {
+  display: flex;
 }
 
 .tabs-content__item {
