@@ -1,3 +1,5 @@
+// data
+
 const products = [
   { productId: 1, productName: "Товар 1", categoryId: 1 },
   { productId: 2, productName: "Товар 2", categoryId: 2 },
@@ -34,6 +36,8 @@ const categories = [
   { categoryId: 5, categoryName: "Брюки" },
 ];
 
+// elements
+
 const productsElement = document.querySelector(".products");
 const tabsTemplateList = document
   .querySelector("#tabs")
@@ -41,6 +45,18 @@ const tabsTemplateList = document
 const tabsTemplateItem = document
   .querySelector("#tabs")
   .content.querySelector(".tabs__item");
+const tabsContentTemplateList = document
+  .querySelector("#tabs-content")
+  .content.querySelector(".tabs-content__list");
+const tabsContentTemplateItem = document
+  .querySelector("#tabs-content")
+  .content.querySelector(".tabs-content__item");
+
+let tabsItem;
+let tabsContent;
+let tabsContentItem;
+
+// functions
 
 const createTabs = () => {
   const tabsItemFragment = document.createDocumentFragment();
@@ -57,61 +73,64 @@ const createTabs = () => {
   productsElement.appendChild(tabsTemplateList);
 };
 
-createTabs();
+const createTabsContentList = () => {
+  const tabsContentListFragment = document.createDocumentFragment();
 
-const tabsContentTemplateList = document
-  .querySelector("#tabs-content")
-  .content.querySelector(".tabs-content__list");
-
-const tabsContentTemplateItem = document
-  .querySelector("#tabs-content")
-  .content.querySelector(".tabs-content__item");
-
-const createTabsContent = (id) => {
-  const tabsContentItemFragment = document.createDocumentFragment();
-
-  products.forEach((product) => {
-    if (product.categoryId == id) {
-      const tabsContentItem = tabsContentTemplateItem.cloneNode(true);
-      tabsContentTemplateItem.remove();
-      tabsContentItem.querySelector(".tabs-content__item-image").alt =
-        product.productName;
-      tabsContentItem.querySelector(".tabs-content__item-name").textContent =
-        product.productName;
-      tabsContentItem.id = product.categoryId;
-      tabsContentItemFragment.appendChild(tabsContentItem);
-    }
+  tabsContentTemplateItem.remove();
+  categories.forEach((item) => {
+    const tabsContentList = tabsContentTemplateList.cloneNode(true);
+    tabsContentList.id = item.categoryId;
+    tabsContentListFragment.appendChild(tabsContentList);
   });
-  tabsContentTemplateList.appendChild(tabsContentItemFragment);
-  productsElement.appendChild(tabsContentTemplateList);
+  productsElement.appendChild(tabsContentListFragment);
 };
 
-const tabs = document.querySelectorAll(".tabs__item");
+const createTabsContentItem = () => {
+  tabsItem = document.querySelectorAll(".tabs__item");
+  tabsContent = document.querySelectorAll(".tabs-content__list");
+  tabsContentItem = document.querySelectorAll(".tabs-content__item");
+  const tabsContentItemFragment = document.createDocumentFragment();
 
-createTabsContent(tabs[0].id);
-
-const tabsContent = document.querySelectorAll(".tabs-content__item");
-
-const clearTab = () => {
-  const tabsContent = document.getElementsByClassName("tabs-content__item");
-  while (tabsContent.length > 0) {
-    tabsContent[0].remove();
-  }
+  tabsContent.forEach((tab, i) => {
+    products.forEach((product) => {
+      if (product.categoryId == tab.id) {
+        const tabsContentItem = tabsContentTemplateItem.cloneNode(true);
+        tabsContentItem.querySelector(".tabs-content__item-image").alt =
+          product.productName;
+        tabsContentItem.querySelector(".tabs-content__item-name").textContent =
+          product.productName;
+        tabsContentItem.id = product.categoryId;
+        tabsContentItemFragment.appendChild(tabsContentItem);
+      }
+    });
+    tabsContent[i].appendChild(tabsContentItemFragment);
+  });
 };
 
 const hideTab = () => {
-  tabs.forEach((tab) => {
-    tab.classList.remove("tabs__item--current");
+  tabsItem.forEach((item, i) => {
+    item.classList.remove("tabs__item--current");
+    tabsContent[i].classList.remove("tabs-content__list--current");
   });
 };
 
-tabs.forEach((tab) => {
-  tabs[0].classList.add("tabs__item--current");
-  tab.addEventListener("click", (evt) => {
-    evt.preventDefault();
-    hideTab();
-    evt.target.classList.add("tabs__item--current");
-    clearTab();
-    createTabsContent(evt.target.id);
+const watchTabSwitch = () => {
+  tabsItem.forEach((item, i) => {
+    tabsItem[0].classList.add("tabs__item--current");
+    tabsContent[0].classList.add("tabs-content__list--current");
+    item.addEventListener("click", (evt) => {
+      hideTab();
+      evt.target.classList.add("tabs__item--current");
+      tabsContent[i].classList.add("tabs-content__list--current");
+    });
   });
+};
+
+// start app
+
+document.addEventListener("DOMContentLoaded", () => {
+  createTabs();
+  createTabsContentList();
+  createTabsContentItem();
+  watchTabSwitch();
 });
